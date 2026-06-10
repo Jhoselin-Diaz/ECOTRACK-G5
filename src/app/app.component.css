@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.app-shell {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.app-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: var(--sidebar-width);
+}
+
+.content-area {
+  height: calc(100dvh - var(--header-height));
+  margin-top: var(--header-height);
+  overflow-y: auto;
+  padding: 18px 28px 24px;
+}
+
+@media (max-width: 900px) {
+  .app-main {
+    margin-left: 76px;
+  }
+
+  .content-area {
+    padding: 16px 16px 22px;
+  }
+}
