@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { MenuComponent } from './component/menu/menu.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'ECOTRACK-G5';
+  constructor(private router: Router) {}
+
+  isAuthRoute(): boolean {
+    const url = this.router.url;
+    return url === '/login' || url === '/register';
+  }
 }
