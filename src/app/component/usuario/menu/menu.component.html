@@ -1,0 +1,123 @@
+<aside class="sidebar">
+
+  <a
+    class="brand"
+    [routerLink]="esAdmin ? '/admin/inicio' : '/inicio'"
+    aria-label="EcoTrack Inicio">
+
+    <span class="brand-mark">
+      ECO
+    </span>
+
+    <span class="brand-copy">
+      <strong>ECOTRACK</strong>
+      <small>Mide tu huella</small>
+    </span>
+
+  </a>
+
+  <nav
+    class="menu"
+    aria-label="Navegación principal">
+
+    @if (esAdmin) {
+      <a
+        class="menu-link"
+        routerLink="/admin/inicio"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <span class="menu-icon" aria-hidden="true">
+          <mat-icon>home</mat-icon>
+        </span>
+        <span>Inicio</span>
+      </a>
+
+      <a
+        class="menu-link"
+        routerLink="/admin/dashboard"
+        routerLinkActive="active">
+        <span class="menu-icon" aria-hidden="true">
+          <mat-icon>dashboard</mat-icon>
+        </span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        class="menu-link"
+        routerLink="/admin/usuarios"
+        routerLinkActive="active">
+        <span class="menu-icon" aria-hidden="true">
+          <mat-icon>people</mat-icon>
+        </span>
+        <span>Lista de Usuarios</span>
+      </a>
+
+      <a
+        class="menu-link"
+        routerLink="/admin/huella-carbono"
+        routerLinkActive="active">
+        <span class="menu-icon" aria-hidden="true">
+          <mat-icon>eco</mat-icon>
+        </span>
+        <span>Histórico de Huella</span>
+      </a>
+
+      <a
+        class="menu-link"
+        routerLink="/admin/factor-emision"
+        routerLinkActive="active">
+        <span class="menu-icon" aria-hidden="true">
+          <mat-icon>calculate</mat-icon>
+        </span>
+        <span>Factor Emisión</span>
+      </a>
+    } @else {
+      @for (item of menuItems; track item.path) {
+        <a
+          class="menu-link"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <span class="menu-icon" aria-hidden="true">
+            <mat-icon>{{ item.icon }}</mat-icon>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    }
+
+  </nav>
+
+  <button
+    class="logout-button"
+    type="button"
+    (click)="logout()">
+
+    <mat-icon>
+      logout
+    </mat-icon>
+
+    Cerrar Sesión
+
+  </button>
+
+</aside>
+
+<header class="header">
+
+  <h1>
+    {{ pageTitle }}
+  </h1>
+
+  <button
+    class="user-button"
+    type="button"
+    aria-label="Perfil de usuario">
+
+    <mat-icon>
+      account_circle
+    </mat-icon>
+
+  </button>
+
+</header>
