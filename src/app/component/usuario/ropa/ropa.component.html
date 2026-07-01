@@ -1,0 +1,256 @@
+<section class="page-container compact">
+
+  <div class="record-layout">
+
+    <!-- FORMULARIO -->
+    <section class="form-card">
+
+      <header>
+        <h2>Registrar prenda</h2>
+        <p>Registra prendas adquiridas para estimar su impacto de carbono.</p>
+      </header>
+
+      <form class="record-form" (ngSubmit)="guardar()">
+
+        <div class="fields-grid">
+
+          <!-- Tipo de prenda -->
+          <mat-form-field appearance="outline">
+
+            <mat-label>Tipo de prenda</mat-label>
+
+            <mat-select
+              [(ngModel)]="formulario.tipoRopa"
+              name="tipoRopa"
+              required
+              [compareWith]="compareObjects">
+
+              @for (tipoRopa of tiposRopa; track tipoRopa) {
+
+                <mat-option [value]="tipoRopa">
+                  {{ tipoRopa }}
+                </mat-option>
+
+              }
+
+            </mat-select>
+
+          </mat-form-field>
+
+          <!-- Cantidad -->
+          <mat-form-field appearance="outline">
+            <mat-label>Cantidad (unidades)</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              step="1"
+              pattern="^[0-9]+$"
+              [(ngModel)]="formulario.cantidad"
+              #cantidadModel="ngModel"
+              name="cantidad"
+              required>
+
+            @if (cantidadModel.invalid && (cantidadModel.dirty || cantidadModel.touched)) {
+              <mat-error>
+                @if (cantidadModel.errors?.['required']) {
+                  La cantidad es requerida.
+                } @else if (cantidadModel.errors?.['pattern']) {
+                  Solo se permiten números enteros.
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            mat-raised-button
+            type="submit"
+            class="primary-button"
+            [disabled]="guardando">
+
+            {{ editandoId ? 'Guardar cambios' : 'Guardar consumo' }}
+
+          </button>
+
+          @if (editandoId) {
+
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="cancelar()">
+
+              Cancelar
+
+            </button>
+
+          }
+
+        </div>
+
+      </form>
+
+    </section>
+
+    <!-- HISTORIAL -->
+    <section class="history-card">
+
+      <div class="section-heading">
+        <h2>Ropas Registradas</h2>
+        <span>{{ consumos.length }} registros</span>
+      </div>
+
+      @if (consumos.length > 0) {
+
+        <div class="table-wrap">
+
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z0">
+
+            <!-- Prenda -->
+            <ng-container matColumnDef="prenda">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Prenda
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ consumo.nombre }}
+              </td>
+
+            </ng-container>
+
+            <!-- Cantidad -->
+            <ng-container matColumnDef="cantidad">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Cantidad
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ obtenerCantidad(consumo) }}
+              </td>
+
+            </ng-container>
+
+            <!-- CO2 -->
+            <ng-container matColumnDef="co2">
+
+              <th mat-header-cell *matHeaderCellDef>
+                CO₂ generado
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ obtenerCo2(consumo) }}
+              </td>
+
+            </ng-container>
+
+            <!-- Fecha -->
+            <ng-container matColumnDef="fecha">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Fecha
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ obtenerFecha(consumo) }}
+              </td>
+
+            </ng-container>
+
+            <!-- Acciones -->
+            <ng-container matColumnDef="acciones">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Acciones
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+
+                <div class="actions">
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    class="table-action"
+                    (click)="editar(consumo)">
+
+                    Editar
+
+                  </button>
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    class="table-action danger"
+                    (click)="eliminar(consumo.id)">
+
+                    Eliminar
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns">
+            </tr>
+
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+
+          </table>
+
+        </div>
+
+        <mat-paginator
+          [pageSize]="5"
+          [pageSizeOptions]="[3,5,10]"
+          showFirstLastButtons>
+        </mat-paginator>
+
+      } @else {
+
+        <section class="empty-state">
+
+          <div
+            class="empty-illustration"
+            aria-hidden="true">
+
+            <span class="ground"></span>
+            <span class="basket"></span>
+
+            <span class="leaf one-empty"></span>
+            <span class="leaf two-empty"></span>
+            <span class="leaf three-empty"></span>
+
+          </div>
+
+          <h3>No tienes prendas registradas</h3>
+
+          <p>
+            Empieza registrando tu consumo de ropa.
+          </p>
+
+        </section>
+
+      }
+
+    </section>
+
+  </div>
+
+</section>
