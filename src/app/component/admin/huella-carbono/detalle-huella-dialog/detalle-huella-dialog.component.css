@@ -1,0 +1,224 @@
+:host {
+  display: block;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  color: #333;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: #f7f9f7;
+  border-bottom: 1px solid rgba(127, 165, 141, 0.15);
+}
+
+.header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-icon {
+  color: #2e7d32;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.dialog-title {
+  margin: 0 !important;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1b5e20;
+}
+
+.btn-close {
+  color: #777;
+}
+
+.dialog-content {
+  padding: 24px !important;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Tarjetas de Información */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: #fafbfc;
+  border: 1px solid rgba(127, 165, 141, 0.12);
+  border-radius: 10px;
+}
+
+.card-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.85;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-label {
+  font-size: 0.76rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-value {
+  font-size: 0.95rem;
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+/* Colores de Iconos */
+.text-green { color: #2e7d32; }
+.text-blue { color: #1565c0; }
+.text-orange { color: #e65100; }
+.text-red { color: #c62828; }
+.text-purple { color: #6a1b9a; }
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin: 25px 0 15px 0;
+  border-bottom: 2px solid rgba(46, 125, 50, 0.1);
+  padding-bottom: 6px;
+}
+
+/* Categorías y Progreso */
+.categories-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.category-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.category-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-name-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.category-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #555;
+}
+
+.category-name {
+  font-size: 0.9rem;
+}
+
+.category-values {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.category-val-kg {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.category-percent {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Custom Progress Bar Colors */
+::ng-deep .bar-transporte .mdc-linear-progress__bar-inner {
+  background-color: #3b82f6 !important;
+}
+::ng-deep .bar-alimentacion .mdc-linear-progress__bar-inner {
+  background-color: #ef4444 !important;
+}
+::ng-deep .bar-electricidad .mdc-linear-progress__bar-inner {
+  background-color: #f59e0b !important;
+}
+::ng-deep .bar-ropa .mdc-linear-progress__bar-inner {
+  background-color: #10b981 !important;
+}
+
+.progress-bar-custom {
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* Tabla de Sub-Registros */
+.table-container {
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.detail-table {
+  width: 100%;
+}
+
+.detail-table th {
+  background-color: #f1f8e9;
+  color: #33691e;
+  font-weight: 700;
+}
+
+.detail-table td {
+  padding: 12px 16px;
+  font-size: 0.85rem;
+}
+
+.text-right {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.text-green-bold {
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(127, 165, 141, 0.15);
+  background-color: #f7f9f7;
+}
+
+.btn-primary {
+  background-color: #2e7d32 !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
