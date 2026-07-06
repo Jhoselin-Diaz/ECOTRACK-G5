@@ -1,0 +1,8 @@
+services:
+  frontend:
+    build:
+      context: .
+    container_name: ecotrack-frontend
+    restart: always
+    ports:
+      - "80:80"  # Mapea el puerto 80 del servidor AWS al puerto 80 de Nginx
