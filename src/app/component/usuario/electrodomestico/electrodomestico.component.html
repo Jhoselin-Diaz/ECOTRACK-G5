@@ -1,0 +1,248 @@
+<section class="page-container compact">
+
+  <div class="record-layout">
+
+    <!-- FORMULARIO -->
+    <section class="form-card">
+
+      <header>
+        <h2>Registrar electrodoméstico</h2>
+        <p>Agrega el consumo eléctrico de tus electrodomésticos.</p>
+      </header>
+
+      <form class="record-form" (ngSubmit)="guardar()">
+
+        <div class="fields-grid">
+
+          <!-- Electrodoméstico -->
+          <mat-form-field appearance="outline">
+
+            <mat-label>Tipo de electrodoméstico</mat-label>
+
+            <mat-select
+              [(ngModel)]="formulario.tipoElectrodomestico"
+              name="tipoElectrodomestico"
+              required
+              [compareWith]="compareObjects">
+
+              @for (electrodomestico of electrodomesticos; track electrodomestico) {
+
+                <mat-option [value]="electrodomestico">
+
+                  {{ electrodomestico }}
+
+                </mat-option>
+
+              }
+
+            </mat-select>
+
+          </mat-form-field>
+
+          <!-- Consumo -->
+          <mat-form-field appearance="outline">
+
+            <mat-label>Consumo (horas)</mat-label>
+
+            <input
+              matInput
+              type="number"
+              min="0"
+              step="any"
+              [(ngModel)]="formulario.cantidad"
+              name="cantidad"
+              required>
+
+          </mat-form-field>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            mat-raised-button
+            type="submit"
+            class="primary-button"
+            [disabled]="guardando">
+
+            {{ editandoId ? 'Guardar cambios' : 'Guardar consumo' }}
+
+          </button>
+
+          @if (editandoId) {
+
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="cancelar()">
+
+              Cancelar
+
+            </button>
+
+          }
+
+        </div>
+
+      </form>
+
+    </section>
+
+    <!-- HISTORIAL -->
+    <section class="history-card">
+
+      <div class="section-heading">
+        <h2>Electrodomésticos Registrados</h2>
+        <span>{{ consumos.length }} registros</span>
+      </div>
+
+      @if (consumos.length > 0) {
+
+        <div class="table-wrap">
+
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z0">
+
+            <!-- Electrodoméstico -->
+            <ng-container matColumnDef="electrodomestico">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Electrodoméstico
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ consumo.nombre }}
+              </td>
+
+            </ng-container>
+
+            <!-- Consumo -->
+            <ng-container matColumnDef="cantidad">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Consumo (horas)
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ obtenerCantidad(consumo) }}
+              </td>
+
+            </ng-container>
+
+            <!-- CO2 -->
+            <ng-container matColumnDef="co2">
+
+              <th mat-header-cell *matHeaderCellDef>
+                CO₂ generado
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ obtenerCo2(consumo) }}
+              </td>
+
+            </ng-container>
+
+            <!-- Fecha -->
+            <ng-container matColumnDef="fecha">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Fecha
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+                {{ obtenerFecha(consumo) }}
+              </td>
+
+            </ng-container>
+
+            <!-- Acciones -->
+            <ng-container matColumnDef="acciones">
+
+              <th mat-header-cell *matHeaderCellDef>
+                Acciones
+              </th>
+
+              <td mat-cell *matCellDef="let consumo">
+
+                <div class="actions">
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    class="table-action"
+                    (click)="editar(consumo)">
+
+                    Editar
+
+                  </button>
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    class="table-action danger"
+                    (click)="eliminar(consumo.id)">
+
+                    Eliminar
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns">
+            </tr>
+
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+
+          </table>
+
+        </div>
+
+        <mat-paginator
+          [pageSize]="5"
+          [pageSizeOptions]="[3,5,10]"
+          showFirstLastButtons>
+        </mat-paginator>
+
+      } @else {
+
+        <section class="empty-state">
+
+          <div
+            class="empty-illustration"
+            aria-hidden="true">
+
+            <span class="ground"></span>
+            <span class="basket"></span>
+
+            <span class="leaf one-empty"></span>
+            <span class="leaf two-empty"></span>
+            <span class="leaf three-empty"></span>
+
+          </div>
+
+          <h3>No tienes electrodomésticos registrados</h3>
+
+          <p>
+            Empieza registrando tu consumo eléctrico.
+          </p>
+
+        </section>
+
+      }
+
+    </section>
+
+  </div>
+
+</section>

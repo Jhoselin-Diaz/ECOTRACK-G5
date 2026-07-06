@@ -1,0 +1,318 @@
+<section class="resultados-container">
+  <div class="resultados-card">
+    <form class="resultados-form" (ngSubmit)="generarResultados()">
+
+      <div class="resultados-grid">
+
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Tipo de período</mat-label>
+          <mat-select [(ngModel)]="tipoPeriodo" name="tipoPeriodo">
+            <mat-option value="dia">Día</mat-option>
+            <mat-option value="mes">Mes</mat-option>
+            <mat-option value="anio">Año</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        @if (tipoPeriodo === 'dia') {
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Fecha</mat-label>
+
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="formulario.fechaDia"
+              name="fechaDia">
+
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker">
+            </mat-datepicker-toggle>
+
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        }
+
+        @if (tipoPeriodo === 'mes') {
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Mes</mat-label>
+
+            <mat-select
+              [(ngModel)]="formulario.mes"
+              name="mes">
+
+              @for (mes of meses; track mes.valor) {
+                <mat-option [value]="mes.valor">
+                  {{ mes.nombre }}
+                </mat-option>
+              }
+
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Año</mat-label>
+
+            <mat-select
+              [(ngModel)]="formulario.anio"
+              name="anio">
+
+              @for (anio of anios; track anio) {
+                <mat-option [value]="anio">
+                  {{ anio }}
+                </mat-option>
+              }
+
+            </mat-select>
+          </mat-form-field>
+
+        }
+
+        @if (tipoPeriodo === 'anio') {
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Año</mat-label>
+
+            <mat-select
+              [(ngModel)]="formulario.anio"
+              name="anio">
+
+              @for (anio of anios; track anio) {
+                <mat-option [value]="anio">
+                  {{ anio }}
+                </mat-option>
+              }
+
+            </mat-select>
+          </mat-form-field>
+
+        }
+
+        <button
+          type="submit"
+          class="generate-button"
+          [disabled]="!formularioValido">
+
+          Generar resultados
+
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ESTADOS DEL DASHBOARD -->
+
+  @if (cargando) {
+    <div class="dashboard-loading">
+      <div class="loading-spinner"></div>
+      <p>Calculando tu impacto ambiental real...</p>
+    </div>
+  }
+
+  @if (error) {
+    <div class="dashboard-error">
+      <span class="error-icon">⚠️</span>
+      <p>{{ error }}</p>
+    </div>
+  }
+
+  @if (dashboardVisible && !cargando) {
+
+    <div class="dashboard-results">
+
+      @if (categoriasFiltradas.length === 0) {
+
+        <section class="dashboard-empty-state">
+
+          <div class="empty-illustration">
+            <span class="ground"></span>
+            <span class="basket"></span>
+            <span class="leaf one-empty"></span>
+            <span class="leaf two-empty"></span>
+            <span class="leaf three-empty"></span>
+          </div>
+
+          <h3>Sin registros en este período</h3>
+
+          <p>
+            No tienes consumos registrados en las fechas seleccionadas.
+            Registra consumos en la barra lateral o cambia el filtro.
+          </p>
+
+        </section>
+
+      }
+
+      @if (categoriasFiltradas.length > 0) {
+
+        <div class="dashboard-active-content">
+
+          <!-- HU31 — Banner de Alerta Visual de Consumo Global -->
+          @if (dashboardVisible && categoriasFiltradas.length > 0) {
+            <div class="alerta-global-banner" [ngClass]="colorAlertaClass">
+              <span class="alerta-icono">
+                @if (clasificacionGlobal === 'EFICIENTE') { 🌿 }
+                @if (clasificacionGlobal === 'MODERADO')  { ⚠️ }
+                @if (clasificacionGlobal === 'CRÍTICO')   { 🚨 }
+              </span>
+              <div class="alerta-texto">
+                <span class="alerta-badge">{{ clasificacionGlobal }}</span>
+                <span class="alerta-mensaje">{{ mensajeAlerta }}</span>
+              </div>
+              <span class="alerta-valor">{{ totalGeneral | number:'1.1-1' }} kg CO₂</span>
+            </div>
+          }
+
+          <!-- GRID DE CATEGORÍAS -->
+
+          <div class="categories-grid">
+
+            @for (cat of categoriasFiltradas; track cat.id) {
+
+              <div class="category-card">
+
+                <div class="card-header">
+                  <span class="category-icon">{{ cat.icono }}</span>
+                  <h3 class="category-title">{{ cat.nombre }}</h3>
+                </div>
+
+                <ul class="register-list">
+
+                  @for (reg of cat.registros; track $index) {
+
+                    <li class="register-item">
+                      <span class="item-name">{{ reg.nombre }}</span>
+                      <span class="item-dots"></span>
+                      <span class="item-value">
+                {{ reg.co2 | number:'1.1-1' }} kg CO₂
+              </span>
+                    </li>
+
+                  }
+
+                </ul>
+
+                <div class="card-footer">
+                  <span class="footer-label">Total categoría</span>
+                  <span class="footer-value">
+              {{ cat.totalCo2 | number:'1.1-1' }} kg CO₂
+            </span>
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+          <!-- TOTAL GENERAL -->
+
+          <div class="total-general-card">
+
+            <div class="total-general-border"></div>
+
+            <div class="total-general-content">
+          <span class="total-general-label">
+            TOTAL GENERAL
+          </span>
+
+              <span class="total-general-value">
+            {{ totalGeneral | number:'1.1-1' }} kg CO₂
+          </span>
+            </div>
+
+          </div>
+
+          <!-- EQUIVALENCIAS -->
+
+          <section class="equivalencias-section">
+
+            <h3 class="equivalencias-title">
+              Equivalencias Ambientales
+            </h3>
+
+            <p class="equivalencias-subtitle">
+              ¿Qué significa esta cantidad de CO₂ en la vida real?
+            </p>
+
+            <div class="equivalencias-grid">
+
+              <div class="equivalencia-card">
+
+                <span class="eq-icon">🌳</span>
+
+                <div class="eq-info">
+              <span class="eq-value">
+                {{ equivalencias.arboles | number:'1.1-1' }}
+              </span>
+
+                  <span class="eq-label">
+                Árboles necesarios para absorber esta cantidad en un año
+              </span>
+                </div>
+
+              </div>
+
+              <div class="equivalencia-card">
+
+                <span class="eq-icon">⛽</span>
+
+                <div class="eq-info">
+              <span class="eq-value">
+                {{ equivalencias.kilometros | number:'1.0-0' }}
+              </span>
+
+                  <span class="eq-label">
+                Kilómetros equivalentes recorridos en coche
+              </span>
+                </div>
+
+              </div>
+
+              <div class="equivalencia-card">
+
+                <span class="eq-icon">💡</span>
+
+                <div class="eq-info">
+              <span class="eq-value">
+                {{ equivalencias.electricidad | number:'1.0-0' }}
+              </span>
+
+                  <span class="eq-label">
+                kWh de consumo eléctrico equivalente
+              </span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- EXPORTAR -->
+
+          <div class="export-section">
+
+            <button
+              type="button"
+              class="export-button"
+              (click)="exportarDashboard()">
+
+              <span class="export-icon" aria-hidden="true">📥</span>
+              Exportar Resultados
+
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</section>

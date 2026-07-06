@@ -1,0 +1,133 @@
+<div class="huella-container">
+
+  <!-- BARRA DE FILTROS SUPERIOR -->
+  <mat-card class="filter-card">
+    <mat-card-content class="filter-content">
+      <div class="filters-grid">
+
+        <!-- Búsqueda por texto (Usuario / Correo) -->
+        <mat-form-field appearance="outline" class="filter-field search-input-field">
+          <mat-label>Búsqueda</mat-label>
+          <input matInput type="text" [(ngModel)]="searchQuery" placeholder="Buscar por usuario o correo...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtro por Nivel de Alerta -->
+        <mat-form-field appearance="outline" class="filter-field select-field">
+          <mat-label>Nivel de Alerta</mat-label>
+          <mat-select [(ngModel)]="filtroAlerta" (selectionChange)="aplicarFiltro()">
+            <mat-option value="Todos">Todos los niveles</mat-option>
+            <mat-option value="CRITICO">Critico (> 1000 kg)</mat-option>
+            <mat-option value="MODERADO">Moderado (100 kg - 1000 kg)</mat-option>
+            <mat-option value="EFICIENTE">Eficiente (< 100 kg)</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Filtro por Rango de Fechas -->
+        <mat-form-field appearance="outline" class="filter-field date-range-field">
+          <mat-label>Rango de fechas</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Desde" [(ngModel)]="fechaDesde">
+            <input matEndDate placeholder="Hasta" [(ngModel)]="fechaHasta">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker (closed)="aplicarFiltro()"></mat-date-range-picker>
+        </mat-form-field>
+
+        <!-- Botones de Acción -->
+        <div class="filter-actions">
+          <button mat-flat-button color="primary" type="button" class="btn-buscar" (click)="aplicarFiltro()">
+            <mat-icon>filter_alt</mat-icon>
+            Buscar
+          </button>
+
+          <button mat-stroked-button type="button" class="btn-limpiar" (click)="limpiarFiltros()">
+            <mat-icon>restart_alt</mat-icon>
+            Limpiar
+          </button>
+        </div>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- TABLA DE HISTÓRICO GLOBAL -->
+  <mat-card class="table-card">
+    <mat-card-content class="table-content">
+
+      @if (cargando) {
+      <div class="loading">Cargando histórico global de cálculos...</div>
+      } @else if (errorMessage) {
+      <div class="error-msg-container">
+        <mat-icon class="error-icon">warning</mat-icon>
+        <span class="error-msg-text">{{ errorMessage }}</span>
+      </div>
+      }
+
+      <div class="table-responsive">
+        <table class="huella-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Correo electrónico</th>
+              <th>Clasificación</th>
+              <th>Total CO₂ (kg)</th>
+              <th>Mes Evaluado</th>
+              <th>Auditoría</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (h of dataSource.data; track h.id + '_' + h.fechaCalculo) {
+            <tr>
+              <td>{{ h.id }}</td>
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-circle">
+                    {{ h.usuario.substring(0, 2).toUpperCase() }}
+                  </div>
+                  <strong>{{ h.usuario }}</strong>
+                </div>
+              </td>
+              <td class="text-secondary">{{ h.correo }}</td>
+              <td>
+                <span class="period-badge" [class.badge-eficiente]="h.totalKgCO2 < 100"
+                  [class.badge-moderado]="h.totalKgCO2 >= 100 && h.totalKgCO2 <= 1000"
+                  [class.badge-critico]="h.totalKgCO2 > 1000" [class.badge-mensual]="h.totalKgCO2 < 100"
+                  [class.badge-anual]="h.totalKgCO2 >= 100 && h.totalKgCO2 <= 1000"
+                  [class.badge-diario]="h.totalKgCO2 > 1000">
+                  {{ h.totalKgCO2 > 1000 ? 'CRÍTICO' : (h.totalKgCO2 >= 100 ? 'MODERADO' : 'EFICIENTE') }}
+                </span>
+              </td>
+              <td class="emissions-cell">{{ h.totalKgCO2 | number:'1.2-2' }} kg</td>
+              <td>{{ h.fechaCalculo }}</td>
+              <td>
+                <span class="status-badge" [class.status-critico]="h.totalKgCO2 > 1000"
+                  [class.status-moderado]="h.totalKgCO2 >= 100 && h.totalKgCO2 <= 1000"
+                  [class.status-completado]="h.totalKgCO2 < 100">
+                  <mat-icon class="badge-icon">
+                    {{ h.totalKgCO2 > 1000 ? 'warning' : (h.totalKgCO2 < 100 ? 'check_circle' : 'info' ) }} </mat-icon>
+                      {{ h.totalKgCO2 > 1000 ? 'Mitigación Urgente' : (h.totalKgCO2 < 100 ? 'Consumo Óptimo'
+                        : 'Monitoreo Continuo' ) }} </span>
+              </td>
+              <td class="text-center">
+                <button mat-stroked-button class="btn-detail" (click)="verDetalle(h)">
+                  <mat-icon>visibility</mat-icon>
+                  Ver detalle
+                </button>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="8" class="empty-message">No se encontraron registros de huella de carbono.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

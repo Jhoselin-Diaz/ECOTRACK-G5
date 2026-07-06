@@ -1,0 +1,307 @@
+<div class="dashboard-container">
+
+  <!-- Tarjetas superiores -->
+  <div class="metrics-grid">
+
+    <mat-card class="metric-card users">
+      <mat-card-header class="m-card-header">
+        <div class="metric-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+        <mat-card-title class="m-card-title">Usuarios Registrados</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="m-card-content">
+        <span class="metric-value">{{ resumen.totalUsuarios }}</span>
+        <span class="metric-trend positive">
+          <mat-icon class="trend-icon">trending_up</mat-icon>
+          +4.8% vs mes anterior
+        </span>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric-card records">
+      <mat-card-header class="m-card-header">
+        <div class="metric-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <mat-card-title class="m-card-title">Registros Realizados</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="m-card-content">
+        <span class="metric-value">{{ resumen.totalConsumos }}</span>
+        <span class="metric-trend positive">
+          <mat-icon class="trend-icon">trending_up</mat-icon>
+          +12.3% vs mes anterior
+        </span>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric-card emissions">
+      <mat-card-header class="m-card-header">
+        <div class="metric-icon">
+          <mat-icon>eco</mat-icon>
+        </div>
+        <mat-card-title class="m-card-title">Huella Total (CO₂)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="m-card-content">
+        <span class="metric-value">{{ resumen.huellaTotal | number:'1.1-2' }} kg</span>
+        <span class="metric-trend positive">
+          <mat-icon class="trend-icon">trending_up</mat-icon>
+          +2.5% vs mes anterior
+        </span>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric-card average">
+      <mat-card-header class="m-card-header">
+        <div class="metric-icon">
+          <mat-icon>bar_chart</mat-icon>
+        </div>
+        <mat-card-title class="m-card-title">Promedio por Usuario</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="m-card-content">
+        <span class="metric-value">{{ resumen.huellaPromedio | number:'1.1-2' }} kg</span>
+        <span class="metric-trend negative">
+          <mat-icon class="trend-icon">trending_down</mat-icon>
+          -1.8% vs mes anterior
+        </span>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <!-- SECCIÓN GRÁFICOS -->
+  <div class="charts-grid">
+
+    <!-- Evolución de la huella -->
+    <mat-card class="chart-card">
+      <mat-card-header class="c-card-header">
+        <mat-card-title class="c-card-title">Evolución de la huella de carbono (kg CO₂)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="c-card-content">
+        @if (cargando) {
+          <div class="loading-container">Cargando gráfico...</div>
+        } @else {
+          <div class="svg-container">
+            <svg [attr.viewBox]="'0 0 ' + svgWidth + ' ' + svgHeight" class="evolution-svg">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2f8247" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#2f8247" stop-opacity="0.0" />
+                </linearGradient>
+              </defs>
+
+              <!-- Gridlines (Horizontal) -->
+              <line [attr.x1]="paddingLeft" y1="20" [attr.x2]="svgWidth - paddingRight" y2="20" class="grid-line" />
+              <line [attr.x1]="paddingLeft" y1="57.5" [attr.x2]="svgWidth - paddingRight" y2="57.5" class="grid-line" />
+              <line [attr.x1]="paddingLeft" y1="95" [attr.x2]="svgWidth - paddingRight" y2="95" class="grid-line" />
+              <line [attr.x1]="paddingLeft" y1="132.5" [attr.x2]="svgWidth - paddingRight" y2="132.5" class="grid-line" />
+              <line [attr.x1]="paddingLeft" y1="170" [attr.x2]="svgWidth - paddingRight" y2="170" class="axis-line" />
+
+              <!-- Relleno bajo la curva -->
+              @if (areaPointsStr) {
+                <polygon [attr.points]="areaPointsStr" fill="url(#areaGrad)" />
+              }
+
+              <!-- Línea del Gráfico -->
+              @if (polylinePointsStr) {
+                <polyline [attr.points]="polylinePointsStr" fill="none" stroke="#1d6b42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              }
+
+              <!-- Etiquetas del eje Y -->
+              <text [attr.x]="paddingLeft - 8" y="24" class="axis-text text-right">{{ maxEmisionEvolucion | number:'1.0-0' }}</text>
+              <text [attr.x]="paddingLeft - 8" y="99" class="axis-text text-right">{{ (maxEmisionEvolucion / 2) | number:'1.0-0' }}</text>
+              <text [attr.x]="paddingLeft - 8" y="174" class="axis-text text-right">0</text>
+
+              <!-- Etiquetas del eje X -->
+              @for (p of puntosGrafico; track p.label) {
+                <text [attr.x]="p.x" [attr.y]="svgHeight - 10" class="axis-text text-center">{{ p.label }}</text>
+              }
+
+              <!-- Puntos interactivos -->
+              @for (p of puntosGrafico; track p.label) {
+                <circle
+                  [attr.cx]="p.x"
+                  [attr.cy]="p.y"
+                  r="5"
+                  class="interactive-dot"
+                  (mouseenter)="mostrarTooltip(p)"
+                  (mouseleave)="ocultarTooltip()" />
+              }
+
+              <!-- Tooltip activo -->
+              @if (tooltipActivo) {
+                <g class="svg-tooltip-group">
+                  <rect
+                    [attr.x]="tooltipX - 55"
+                    [attr.y]="tooltipY - 26"
+                    width="110"
+                    height="22"
+                    rx="4"
+                    class="tooltip-bg" />
+                  <text
+                    [attr.x]="tooltipX"
+                    [attr.y]="tooltipY - 11"
+                    class="tooltip-text text-center">
+                    {{ tooltipActivo.value | number:'1.0-1' }} kg CO₂
+                  </text>
+                </g>
+              }
+            </svg>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Huella por categoría -->
+    <mat-card class="chart-card">
+      <mat-card-header class="c-card-header">
+        <mat-card-title class="c-card-title">Huella de carbono por categoría</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="c-card-content">
+        @if (cargando) {
+          <div class="loading-container">Cargando categorías...</div>
+        } @else if (huellaCategorias.length === 0) {
+          <p class="empty-msg">No hay registros categorizados.</p>
+        } @else {
+          <div class="category-bars-list">
+            @for (cat of huellaCategorias; track cat.categoria) {
+              <div class="category-bar-row">
+                <div class="category-bar-info">
+                  <span class="category-name">{{ cat.categoria }}</span>
+                  <span class="category-value">
+                    <strong>{{ cat.totalKgCO2 | number:'1.0-1' }} kg</strong> ({{ cat.porcentaje | number:'1.0-1' }}%)
+                  </span>
+                </div>
+                <div class="category-bar-track">
+                  <div class="category-bar-fill" [style.width.%]="cat.porcentaje"></div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <!-- SECCIÓN RANKINGS -->
+  <div class="rankings-grid">
+
+    <!-- Tabla 1: Usuarios más activos -->
+    <mat-card class="ranking-card">
+      <mat-card-header class="r-card-header">
+        <mat-card-title class="r-card-title">Usuarios más activos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="r-card-content">
+        @if (cargando) {
+          <div class="loading-container">Cargando ranking...</div>
+        } @else {
+          <table mat-table [dataSource]="usuariosActivos" class="ranking-table">
+
+            <!-- Columna -->
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef class="col-num">#</th>
+              <td mat-cell *matCellDef="let element; let i = index" class="col-num">{{ i + 1 }}</td>
+            </ng-container>
+
+            <!-- Columna Usuario -->
+            <ng-container matColumnDef="usuario">
+              <th mat-header-cell *matHeaderCellDef>Usuario</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="user-info-cell">
+                  <strong>{{ element.username }}</strong>
+                  <span class="user-email">{{ element.correo }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Columna Registros -->
+            <ng-container matColumnDef="registros">
+              <th mat-header-cell *matHeaderCellDef class="text-right">Registros</th>
+              <td mat-cell *matCellDef="let element" class="text-right font-bold">{{ element.totalRegistros }}</td>
+            </ng-container>
+
+            <!-- Columna Último registro -->
+            <ng-container matColumnDef="ultimoRegistro">
+              <th mat-header-cell *matHeaderCellDef class="text-right">Último registro</th>
+              <td mat-cell *matCellDef="let element" class="text-right text-gray">
+                {{ element.ultimoRegistro | date:'dd/MM/yyyy HH:mm' }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnasActivos"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasActivos;"></tr>
+          </table>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Tabla 2: Usuarios por huella de carbono -->
+    <mat-card class="ranking-card">
+      <mat-card-header class="r-card-header header-with-filters">
+        <mat-card-title class="r-card-title">Usuarios por huella de carbono</mat-card-title>
+
+        <div class="filter-buttons">
+          <button
+            type="button"
+            class="filter-btn"
+            [class.active]="filtroImpacto === 'MAYOR'"
+            (click)="cambiarFiltroImpacto('MAYOR')">
+            Mayor impacto
+          </button>
+          <button
+            type="button"
+            class="filter-btn"
+            [class.active]="filtroImpacto === 'MENOR'"
+            (click)="cambiarFiltroImpacto('MENOR')">
+            Menor impacto
+          </button>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="r-card-content">
+        @if (cargando) {
+          <div class="loading-container">Cargando ranking...</div>
+        } @else {
+          <table mat-table [dataSource]="usuariosMayorHuella" class="ranking-table">
+
+            <!-- Columna # -->
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef class="col-num">#</th>
+              <td mat-cell *matCellDef="let element; let i = index" class="col-num">{{ i + 1 }}</td>
+            </ng-container>
+
+            <!-- Columna Usuario -->
+            <ng-container matColumnDef="usuario">
+              <th mat-header-cell *matHeaderCellDef>Usuario</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="user-info-cell">
+                  <strong>{{ element.username }}</strong>
+                  <span class="user-email">{{ element.correo }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Columna Huella -->
+            <ng-container matColumnDef="huella">
+              <th mat-header-cell *matHeaderCellDef class="text-right">Huella de Carbono</th>
+              <td mat-cell *matCellDef="let element" class="text-right">
+                <span
+                  class="badge-emissions"
+                  [class.alert-red]="element.totalKgCO2 > 500"
+                  [class.alert-green]="element.totalKgCO2 <= 500">
+                  {{ element.totalKgCO2 | number:'1.1-2' }} kg CO₂
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnasHuella"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasHuella;"></tr>
+          </table>
+        }
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+</div>

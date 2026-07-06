@@ -1,0 +1,331 @@
+.usuarios-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(100%, 1050px);
+  margin: 0 auto;
+}
+
+.filter-card {
+  border: 1px solid rgba(127, 165, 141, 0.14) !important;
+  border-radius: 12px !important;
+  background: var(--white) !important;
+  box-shadow: var(--shadow-soft) !important;
+  padding: 12px 18px;
+}
+
+.filter-content {
+  padding: 0 !important;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: minmax(200px, 2.5fr) minmax(140px, 1.2fr) minmax(140px, 1.2fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-field {
+  width: 100%;
+}
+
+.filter-field ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: #fbfcf9 !important;
+}
+
+.add-user-btn {
+  background-color: #2f8247 !important;
+  color: var(--white) !important;
+  font-weight: 800 !important;
+  border-radius: 8px !important;
+  min-height: 48px !important;
+  padding: 0 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: background-color 160ms ease !important;
+}
+
+.add-user-btn:hover {
+  background-color: #1d6b42 !important;
+}
+
+/* Form Card overlay styling */
+.form-card {
+  border: 1px solid rgba(127, 165, 141, 0.14) !important;
+  border-radius: 12px !important;
+  background: var(--white) !important;
+  box-shadow: var(--shadow-soft) !important;
+  padding: 20px;
+}
+
+.form-header {
+  padding: 0 0 14px 0 !important;
+}
+
+.form-title {
+  margin: 0 !important;
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  color: #1d6b42 !important;
+}
+
+.form-content {
+  padding: 0 !important;
+}
+
+.form-row-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-input {
+  width: 100%;
+}
+
+.form-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.cancel-btn {
+  border: 1px solid #ccc !important;
+  border-radius: 6px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  padding: 6px 16px !important;
+}
+
+.save-btn {
+  background-color: #2f8247 !important;
+  color: var(--white) !important;
+  border-radius: 6px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  padding: 6px 18px !important;
+}
+
+.save-btn:hover {
+  background-color: #1d6b42 !important;
+}
+
+/* Table Card styling */
+.table-card {
+  border: 1px solid rgba(127, 165, 141, 0.14) !important;
+  border-radius: 12px !important;
+  background: var(--white) !important;
+  box-shadow: var(--shadow-soft) !important;
+  padding: 20px;
+}
+
+.table-content {
+  padding: 0 !important;
+}
+
+.loading-label,
+.empty-message {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.usuarios-table {
+  width: 100%;
+  background: transparent !important;
+  border-collapse: collapse;
+}
+
+.usuarios-table th.mat-mdc-header-cell {
+  background: var(--green-light) !important;
+  color: #1d6b42 !important;
+  font-weight: 800 !important;
+  font-size: 0.82rem !important;
+  border-bottom: 2px solid rgba(127, 165, 141, 0.2) !important;
+  padding: 12px !important;
+}
+
+.usuarios-table td.mat-mdc-cell {
+  padding: 12px !important;
+  border-bottom: 1px solid rgba(127, 165, 141, 0.1) !important;
+  font-size: 0.84rem !important;
+  color: #444 !important;
+  vertical-align: middle !important;
+}
+
+.usuarios-table tr.mat-mdc-row:hover {
+  background-color: #fbfcf9 !important;
+}
+
+.col-id {
+  width: 50px;
+  font-weight: 700;
+  color: #777;
+}
+
+.col-actions {
+  width: 110px;
+}
+
+.actions-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn-edit {
+  color: #2f8247 !important;
+}
+
+.btn-edit:hover {
+  background-color: #eef7f2 !important;
+}
+
+/* User profile with initials avatar */
+.user-profile-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-circle {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+  border-radius: 50%;
+  background-color: var(--green-light);
+  color: #1d6b42;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border: 1px solid rgba(157, 189, 170, 0.3);
+}
+
+.admin-avatar {
+  background-color: #1d6b42;
+  color: var(--white);
+  border: 0;
+}
+
+.user-name-text {
+  color: var(--text-dark);
+  font-size: 0.86rem;
+}
+
+.text-secondary {
+  color: #666;
+}
+
+/* Badges for roles and status */
+.role-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.badge-admin {
+  background-color: #e3effa;
+  color: #1967d2;
+}
+
+.badge-user {
+  background-color: #f0f3f1;
+  color: #444;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+/* Opacidades suaves para los estados */
+.status-active {
+  background-color: rgba(47, 130, 71, 0.12);
+  color: #2f8247;
+}
+
+.status-inactive {
+  background-color: rgba(179, 57, 57, 0.12);
+  color: #b33939;
+}
+
+/* Menú contextual */
+::ng-deep .mat-mdc-menu-panel {
+  border-radius: 8px !important;
+  border: 1px solid rgba(127, 165, 141, 0.15) !important;
+}
+
+.menu-danger {
+  color: #b33939 !important;
+}
+
+/* Paginator styling */
+.paginator-custom {
+  background: transparent !important;
+  border-top: 1px solid rgba(127, 165, 141, 0.1) !important;
+  margin-top: 8px !important;
+}
+
+/* Fade in animation */
+.animate-fade-in {
+  animation: fadeIn 200ms ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive grids */
+@media (max-width: 900px) {
+  .filters-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  .add-user-btn {
+    grid-column: span 2;
+    width: 100%;
+    min-height: 44px !important;
+  }
+
+  .form-row-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .add-user-btn {
+    grid-column: span 1;
+  }
+
+  .form-row-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

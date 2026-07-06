@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { MenuComponent } from './component/menu/menu.component';
+import { MenuComponent } from './component/usuario/menu/menu.component';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,6 @@ export class AppComponent {
 
   isAuthRoute(): boolean {
     const url = this.router.url;
-    return url === '/login' || url === '/register';
+    return url === '/login' || url === '/register' || url.startsWith('/admin');
   }
 }

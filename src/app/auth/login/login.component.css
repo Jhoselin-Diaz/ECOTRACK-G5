@@ -1,0 +1,142 @@
+:root {
+  --green-primary: #2d5a3d;
+  --green-secondary: #7fa58d;
+  --cream: #f4f3ea;
+  --white: #ffffff;
+}
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--cream);
+  padding: 20px;
+}
+
+.auth-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(45, 90, 61, 0.15);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  place-items: center;
+  border: 3px solid var(--green-primary);
+  border-radius: 12px;
+  color: var(--green-primary);
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.auth-header h1 {
+  margin: 0 0 8px;
+  color: var(--green-primary);
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.auth-header p {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.error-message {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--green-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--green-secondary);
+}
+
+.auth-button {
+  width: 100%;
+  padding: 14px;
+  background: var(--green-primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.auth-button.mat-mdc-raised-button {
+  background: var(--green-primary);
+  color: white;
+}
+
+.auth-button:hover {
+  background: var(--green-secondary);
+  transform: translateY(-2px);
+}
+
+.auth-link {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.auth-link a {
+  color: var(--green-primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* CAMPOS MATERIAL */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 12px;
+}

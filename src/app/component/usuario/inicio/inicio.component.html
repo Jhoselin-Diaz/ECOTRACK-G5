@@ -1,0 +1,135 @@
+<section class="page-container">
+
+  <section class="hero">
+
+    <div class="hero-copy">
+
+      <h2>EcoTrack</h2>
+
+      <p>
+        Mide, entiende y reduce tu huella de carbono de forma simple.
+      </p>
+
+      <div class="hero-actions">
+
+        <a
+          class="button primary"
+          routerLink="/alimentos">
+
+          Calcular huella
+
+        </a>
+
+        <a
+          class="button secondary"
+          routerLink="/resultados">
+
+          Ver resultados
+
+        </a>
+
+      </div>
+
+    </div>
+
+    <div
+      class="hero-illustration"
+      aria-label="Ilustración planeta sostenible"
+      role="img">
+
+      <div class="planet">
+
+        <span class="sprout"></span>
+
+        <span class="continent one"></span>
+        <span class="continent two"></span>
+        <span class="continent three"></span>
+
+      </div>
+
+      <span class="leaf left"></span>
+      <span class="leaf right"></span>
+
+      <span class="sparkle s1"></span>
+      <span class="sparkle s2"></span>
+      <span class="sparkle s3"></span>
+
+    </div>
+
+  </section>
+
+  <section
+    class="summary-grid"
+    aria-label="Resumen semanal">
+
+    @for (card of summaryCards; track card.title) {
+
+      <article class="summary-card">
+
+        <div class="card-title">
+
+          <mat-icon
+            class="icon"
+            aria-hidden="true">
+
+            {{ card.icon }}
+
+          </mat-icon>
+
+          <h3>
+            {{ card.title }}
+          </h3>
+
+        </div>
+
+        <p>
+          {{ card.description }}
+        </p>
+
+      </article>
+
+    }
+
+  </section>
+
+  <section class="how-it-works">
+
+    <h2>
+      ¿Cómo funciona?
+    </h2>
+
+    <div class="steps-grid">
+
+      @for (step of steps; track step.title) {
+
+        <article class="step-card">
+
+          <mat-icon
+            class="step-icon"
+            aria-hidden="true">
+
+            {{ step.icon }}
+
+          </mat-icon>
+
+          <div>
+
+            <h3>
+              {{ step.title }}
+            </h3>
+
+            <p>
+              {{ step.description }}
+            </p>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+</section>

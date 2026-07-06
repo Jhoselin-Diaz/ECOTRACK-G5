@@ -1,0 +1,96 @@
+<div class="auth-container">
+
+  <!-- TARJETA DE LOGIN -->
+  <div class="auth-card">
+
+    <!-- CABECERA -->
+    <div class="auth-header">
+
+      <div class="brand-mark">
+        EC
+      </div>
+
+      <h1>
+        EcoTrack
+      </h1>
+
+      <p>
+        Iniciar Sesión
+      </p>
+
+    </div>
+
+    <!-- MENSAJE DE ERROR -->
+    @if (errorMessage) {
+
+      <div class="error-message">
+
+        {{ errorMessage }}
+
+      </div>
+
+    }
+
+    <!-- FORMULARIO -->
+    <form (ngSubmit)="login()">
+
+      <!-- USUARIO -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>
+          Usuario
+        </mat-label>
+
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          required>
+
+      </mat-form-field>
+
+      <!-- CONTRASEÑA -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>
+          Contraseña
+        </mat-label>
+
+        <input
+          matInput
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required>
+
+      </mat-form-field>
+
+      <!-- BOTÓN INGRESAR -->
+      <button
+        mat-raised-button
+        type="submit"
+        class="auth-button">
+
+        Ingresar
+
+      </button>
+
+    </form>
+
+    <!-- ENLACE DE REGISTRO -->
+    <p class="auth-link">
+
+      ¿No tienes cuenta?
+
+      <a routerLink="/register">
+
+        Regístrate
+
+      </a>
+
+    </p>
+
+  </div>
+
+</div>

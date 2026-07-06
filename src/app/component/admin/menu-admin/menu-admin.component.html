@@ -1,0 +1,93 @@
+<div class="app-shell">
+
+  <aside class="sidebar">
+
+    <a
+      class="brand"
+      routerLink="/admin/inicio"
+      aria-label="EcoTrack Admin Inicio">
+
+      <span class="brand-mark">
+        ADM
+      </span>
+
+      <span class="brand-copy">
+        <strong>ECOTRACK</strong>
+        <small>Administración</small>
+      </span>
+
+    </a>
+
+    <nav
+      class="menu"
+      aria-label="Navegación de administración">
+
+      @for (item of menuItems; track item.path) {
+
+        <a
+          class="menu-link"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+
+          <span
+            class="menu-icon"
+            aria-hidden="true">
+
+            <mat-icon>{{ item.icon }}</mat-icon>
+
+          </span>
+
+          <span>
+            {{ item.label }}
+          </span>
+
+        </a>
+
+      }
+
+    </nav>
+
+    <button
+      class="logout-button"
+      type="button"
+      (click)="logout()">
+
+      <mat-icon>
+        logout
+      </mat-icon>
+
+      Cerrar Sesión
+
+    </button>
+
+  </aside>
+
+  <div class="app-main">
+
+    <header class="header">
+
+      <h1>
+        {{ pageTitle }}
+      </h1>
+
+      <button
+        class="user-button"
+        type="button"
+        aria-label="Perfil de administrador">
+
+        <mat-icon>
+          admin_panel_settings
+        </mat-icon>
+
+      </button>
+
+    </header>
+
+    <main class="content-area">
+      <router-outlet />
+    </main>
+
+  </div>
+
+</div>
