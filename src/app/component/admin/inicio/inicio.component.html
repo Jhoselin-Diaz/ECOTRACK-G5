@@ -1,0 +1,72 @@
+<section class="page-container">
+
+  <section class="hero">
+
+    <div class="hero-copy">
+
+      <h2>Panel de Administración</h2>
+
+      <p>
+        Bienvenido al centro de control de EcoTrack. Supervisa la actividad de los usuarios, monitorea las emisiones estimadas y mantén configurados los factores de emisión.
+      </p>
+
+    </div>
+
+    <div
+      class="hero-illustration"
+      aria-label="Ilustración control administrativo"
+      role="img">
+
+      <div class="admin-badge">
+
+        <mat-icon class="shield-icon">security</mat-icon>
+
+        <span class="sparkle s1"></span>
+        <span class="sparkle s2"></span>
+        <span class="sparkle s3"></span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="admin-grid">
+
+    @for (card of adminCards; track card.title) {
+
+      <mat-card class="admin-card">
+
+        <mat-card-header class="card-header">
+
+          <div class="card-header-icon">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+
+          <mat-card-title class="card-title">
+            {{ card.title }}
+          </mat-card-title>
+
+        </mat-card-header>
+
+        <mat-card-content class="card-content">
+          <p>{{ card.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions class="card-actions">
+
+          <a
+            class="button primary"
+            [routerLink]="card.link">
+            {{ card.buttonText }}
+          </a>
+
+        </mat-card-actions>
+
+      </mat-card>
+
+    }
+
+  </section>
+
+</section>
