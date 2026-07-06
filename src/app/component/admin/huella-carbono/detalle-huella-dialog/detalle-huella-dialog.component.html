@@ -1,0 +1,107 @@
+<div class="dialog-header">
+  <div class="header-title-container">
+    <mat-icon class="header-icon">analytics</mat-icon>
+    <h2 mat-dialog-title class="dialog-title">Desglose de Huella de Carbono</h2>
+  </div>
+  <button mat-icon-button (click)="cerrar()" class="btn-close">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <!-- Tarjetas de Información Dinámicas -->
+  <div class="info-grid">
+    <div class="info-card">
+      <mat-icon class="card-icon text-green">person</mat-icon>
+      <div class="card-body">
+        <span class="card-label">Usuario</span>
+        <strong class="card-value">{{ data.usuario }}</strong>
+      </div>
+    </div>
+    <div class="info-card">
+      <mat-icon class="card-icon text-blue">email</mat-icon>
+      <div class="card-body">
+        <span class="card-label">Correo</span>
+        <strong class="card-value">{{ data.correo }}</strong>
+      </div>
+    </div>
+    <div class="info-card">
+      <mat-icon class="card-icon text-orange">event_repeat</mat-icon>
+      <div class="card-body">
+        <span class="card-label">Período</span>
+        <strong class="card-value">{{ data.periodo }}</strong>
+      </div>
+    </div>
+    <div class="info-card">
+      <mat-icon class="card-icon text-red">co2</mat-icon>
+      <div class="card-body">
+        <span class="card-label">Huella Total</span>
+        <strong class="card-value text-red">{{ data.totalKgCO2 | number:'1.2-2' }} kg</strong>
+      </div>
+    </div>
+    <div class="info-card">
+      <mat-icon class="card-icon text-purple">calendar_month</mat-icon>
+      <div class="card-body">
+        <span class="card-label">Fecha Cálculo</span>
+        <strong class="card-value">{{ data.fechaCalculo }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desglose por Categorías con Proporciones -->
+  <h3 class="section-title">Distribución por Categorías</h3>
+  <div class="categories-container">
+    <div class="category-row" *ngFor="let cat of categorias">
+      <div class="category-info">
+        <div class="category-name-icon">
+          <mat-icon class="category-icon">{{ cat.icon }}</mat-icon>
+          <span class="category-name">{{ cat.nombre }}</span>
+        </div>
+        <div class="category-values">
+          <span class="category-val-kg">{{ cat.valor | number:'1.2-2' }} kg CO₂</span>
+          <span class="category-percent">({{ cat.porcentaje }}%)</span>
+        </div>
+      </div>
+      <mat-progress-bar mode="determinate" [value]="cat.porcentaje" class="progress-bar-custom" [ngClass]="cat.colorClass"></mat-progress-bar>
+    </div>
+  </div>
+
+  <!-- Tabla de Sub-Registros Dinámicos -->
+  <h3 class="section-title">Sub-Registros del Cálculo</h3>
+  <div class="table-container">
+    <table mat-table [dataSource]="subRegistros" class="detail-table mat-elevation-z1">
+      
+      <!-- Categoria Column -->
+      <ng-container matColumnDef="categoria">
+        <th mat-header-cell *matHeaderCellDef> Categoría </th>
+        <td mat-cell *matCellDef="let element"> 
+          <strong>{{ element.categoria }}</strong>
+        </td>
+      </ng-container>
+
+      <!-- Actividad Column -->
+      <ng-container matColumnDef="actividad">
+        <th mat-header-cell *matHeaderCellDef> Actividad / Detalle </th>
+        <td mat-cell *matCellDef="let element"> {{ element.actividad }} </td>
+      </ng-container>
+
+      <!-- Valor Column -->
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef class="text-right"> CO₂ generado (kg) </th>
+        <td mat-cell *matCellDef="let element" class="text-right text-green-bold"> 
+          {{ element.valor | number:'1.2-2' }} kg
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-flat-button color="primary" (click)="cerrar()" class="btn-primary">
+    <mat-icon>check_circle</mat-icon>
+    Entendido
+  </button>
+</div>
