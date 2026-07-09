@@ -109,15 +109,48 @@
     {{ pageTitle }}
   </h1>
 
-  <button
-    class="user-button"
-    type="button"
-    aria-label="Perfil de usuario">
+  <div class="header-right">
+    <button
+      class="notifications-button"
+      type="button"
+      [matMenuTriggerFor]="notificationMenu"
+      aria-label="Notificaciones">
+      <mat-icon [matBadge]="notificaciones.length" [matBadgeHidden]="notificaciones.length === 0" matBadgeColor="warn">
+        notifications_active
+      </mat-icon>
+    </button>
 
-    <mat-icon>
-      account_circle
-    </mat-icon>
+    <mat-menu #notificationMenu="matMenu" xPosition="before" class="notification-menu-panel">
+      <div class="notification-menu-header">
+        <span>Notificaciones</span>
+      </div>
+      <div class="notification-menu-list">
+        @if (notificaciones.length === 0) {
+          <div class="notification-empty">No tienes notificaciones pendientes</div>
+        } @else {
+          @for (noti of notificaciones; track noti.id) {
+            <div class="notification-item">
+              <div class="notification-item-text">
+                <span class="notification-item-sender">De: Admin ({{ noti.senderAdminName }})</span>
+                <p class="notification-item-body">{{ noti.messageContent }}</p>
+              </div>
+              <button mat-icon-button class="notification-check-btn" (click)="marcarLeida($event, noti.id)">
+                <mat-icon>check</mat-icon>
+              </button>
+            </div>
+          }
+        }
+      </div>
+    </mat-menu>
 
-  </button>
-
+    <button
+      class="user-button"
+      type="button"
+      aria-label="Perfil de usuario">
+      <mat-icon>
+        account_circle
+      </mat-icon>
+    </button>
+  </div>
 </header>
+

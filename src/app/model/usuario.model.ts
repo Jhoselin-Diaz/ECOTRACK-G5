@@ -20,3 +20,13 @@ export interface UsuarioDTO {
   correo: string;
   password?: string;
 }
+
+export interface NotificacionUsuario {
+  id: number;
+  targetUserId: number;
+  senderAdminName: string;
+  messageContent: string;
+  status: string;
+  sentAt?: string;
+}
+
