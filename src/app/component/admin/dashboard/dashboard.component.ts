@@ -8,7 +8,6 @@ import { AdminDashboardService } from '../../../service/admin-dashboard.service'
 import { ConsumoService } from '../../../service/consumo.service';
 import { UsuarioService } from '../../../service/usuario.service';
 import { DashboardResumenDTO, CategoriaHuellaDTO, UsuarioActivoDTO, UsuarioHuellaTotalDTO, EvolucionHuellaDTO } from '../../../model/dashboard.model';
-import { UsuarioResponseDTO } from '../../../model/usuario.model';
 import { Consumo } from '../../../model/consumo.model';
 
 interface SvgPoint {
@@ -86,13 +85,11 @@ export class DashboardComponent implements OnInit {
     forkJoin({
       usuarios: this.usuarioService.listarUsuarios(),
       consumos: this.consumoService.listar(),
-      factores: this.dashboardService.obtenerHuellaCategorias()
+
     }).subscribe({
       next: (res) => {
         const usuariosRaw: any[] = res.usuarios || [];
         const listaConsumos: Consumo[] = res.consumos || [];
-
-        const listaFactores: any[] = (res as any).factores || [];
 
         // Filtro de admin
         const listaUsuarios = usuariosRaw.filter(usr => {
@@ -104,7 +101,7 @@ export class DashboardComponent implements OnInit {
           return true;
         });
 
-        // METRICAS SUPERIORES REALES
+        // Metricas superiores reales
         this.resumen.totalUsuarios = listaUsuarios.length;
         this.resumen.totalConsumos = listaConsumos.length;
         this.resumen.huellaTotal = listaConsumos.reduce((sum, c) => sum + (c.emisionesKgCO2 || 0), 0);
@@ -153,7 +150,7 @@ export class DashboardComponent implements OnInit {
           .sort((a, b) => b.totalRegistros - a.totalRegistros)
           .slice(0, 5);
 
-
+        // Diagnostico
         if (listaConsumos.length > 0) {
           console.group('%c [DIAGNÓSTICO] Análisis de Consumo en Tiempo de Ejecución ', 'background: #222; color: #bada55; font-size: 12px;');
           console.log('Total registros de consumo recibidos:', listaConsumos.length);
@@ -199,7 +196,7 @@ export class DashboardComponent implements OnInit {
           console.groupEnd();
         }
 
-        // Huella de carbono por categoría
+        // Categorias con mayor emisión
         const mapaCategorias: { [key: number]: string } = {
           1: 'Alimento',
           2: 'Electrodomésticos',
@@ -210,12 +207,7 @@ export class DashboardComponent implements OnInit {
         };
 
         const totalesPorCategoria: { [key: string]: number } = {
-          'Alimento': 0,
-          'Electrodomésticos': 0,
-          'Ropa': 0,
-          'Coche': 0,
-          'Autobús': 0,
-          'Servicio y Vivienda': 0
+          'Alimento': 0, 'Electrodomésticos': 0, 'Ropa': 0, 'Coche': 0, 'Autobús': 0, 'Servicio y Vivienda': 0
         };
 
         listaConsumos.forEach(c => {

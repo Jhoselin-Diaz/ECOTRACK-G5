@@ -54,7 +54,7 @@ export class ResultadosComponent {
     electricidad: 0
   };
 
-  // HU31 — Alerta Visual de Consumo Excesivo
+  // Alerta Visual de Consumo Excesivo
   clasificacionGlobal = '';
   mensajeAlerta = '';
   colorAlertaClass = '';

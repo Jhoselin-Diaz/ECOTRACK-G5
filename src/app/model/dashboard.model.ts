@@ -5,6 +5,7 @@ export interface DashboardResumenDTO {
   huellaPromedio: number;
 }
 
+// Huella de carbono por categoría
 export interface CategoriaHuellaDTO {
   categoria: string;
   totalKgCO2: number;
@@ -32,7 +33,6 @@ export interface EvolucionHuellaDTO {
   totalKgCO2: number;
 }
 
-// Interfaces del componente de Resultados / Reportes de usuario
 export interface RegistroDashboard {
   nombre: string;
   cantidad: number;

@@ -14,9 +14,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { DetalleHuellaDTO } from '../../../model/huella.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DetalleHuellaDTO, UsuarioHuellaDTO } from '../../../model/huella.model';
 import { environment } from '../../../environments/environment';
 import { DetalleHuellaDialogComponent } from './detalle-huella-dialog/detalle-huella-dialog.component';
+import { EnviarMensajeModalComponent } from './enviar-mensaje-modal/enviar-mensaje-modal.component';
 
 @Component({
   selector: 'app-admin-huella-carbono',
@@ -32,7 +34,9 @@ import { DetalleHuellaDialogComponent } from './detalle-huella-dialog/detalle-hu
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
+    EnviarMensajeModalComponent
   ],
   templateUrl: './huella-carbono.component.html',
   styleUrl: './huella-carbono.component.css'
@@ -41,6 +45,8 @@ export class HuellaCarbonoComponent implements OnInit {
   dataSource = new MatTableDataSource<DetalleHuellaDTO>();
   cargando = false;
   errorMessage = '';
+  columnasTabla: string[] = ['id', 'usuario', 'correo', 'clasificacion', 'totalKgCO2', 'fechaCalculo', 'estado', 'acciones', 'enviar_mensaje'];
+
 
   // Filtros
   searchQuery = '';
@@ -242,4 +248,14 @@ export class HuellaCarbonoComponent implements OnInit {
       disableClose: false
     });
   }
+
+  enviarMensaje(usuario: UsuarioHuellaDTO): void {
+    this.dialog.open(EnviarMensajeModalComponent, {
+      data: usuario,
+      width: '500px',
+      maxWidth: '90vw',
+      disableClose: false
+    });
+  }
 }
+

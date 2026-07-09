@@ -111,12 +111,16 @@
                       {{ h.totalKgCO2 > 1000 ? 'Mitigación Urgente' : (h.totalKgCO2 < 100 ? 'Consumo Óptimo'
                         : 'Monitoreo Continuo' ) }} </span>
               </td>
-              <td class="text-center">
+              <td class="text-center actions-cell">
                 <button mat-stroked-button class="btn-detail" (click)="verDetalle(h)">
                   <mat-icon>visibility</mat-icon>
                   Ver detalle
                 </button>
+                <button mat-icon-button class="btn-send-message" mat-tooltip="Enviar mensaje de mitigación" (click)="enviarMensaje(h)">
+                  <mat-icon>chat_bubble</mat-icon>
+                </button>
               </td>
+
             </tr>
             } @empty {
             <tr>

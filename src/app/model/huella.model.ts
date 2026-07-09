@@ -1,7 +1,10 @@
-export interface DetalleHuellaDTO {
+export interface UsuarioHuellaDTO {
   id: number;
   usuario: string;
   correo: string;
+}
+
+export interface DetalleHuellaDTO extends UsuarioHuellaDTO {
   periodo: string;
   totalKgCO2: number;
   fechaCalculo: string;
