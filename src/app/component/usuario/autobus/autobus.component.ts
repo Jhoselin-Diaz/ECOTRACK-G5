@@ -39,6 +39,7 @@ export class AutobusComponent implements OnInit, AfterViewInit {
   consumoOriginal: Consumo | null = null;
   guardando = false;
   formulario = { tipoTransporte: '', factorId: '', horas: '' };
+  errorMsg = '';
 
 
   constructor(
@@ -94,6 +95,11 @@ export class AutobusComponent implements OnInit, AfterViewInit {
   }
 
   guardar(): void {
+    if (Number(this.formulario.horas) <= 0) {
+      this.errorMsg = 'No procede el registro. Corrija los valores.';
+      return;
+    }
+    this.errorMsg = '';
     const factorIdVal = Number(this.formulario.factorId) || (this.editandoId ? this.obtenerConsumoFactorId(this.consumoOriginal!) : 0);
     const factor = this.buscarFactor(factorIdVal) || (this.editandoId ? this.consumoOriginal?.factor : undefined) || this.factores[0];
     const horas = Number(this.formulario.horas);
@@ -168,6 +174,7 @@ export class AutobusComponent implements OnInit, AfterViewInit {
     this.editandoId = null;
     this.consumoOriginal = null;
     this.formulario = { tipoTransporte: '', factorId: '', horas: '' };
+    this.errorMsg = '';
   }
 
   compareObjects(o1: any, o2: any): boolean {

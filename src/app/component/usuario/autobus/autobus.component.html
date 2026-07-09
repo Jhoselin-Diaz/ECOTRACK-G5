@@ -71,11 +71,17 @@
             <input
               matInput
               type="number"
-              min="0"
+              min="0.1"
               step="any"
               [(ngModel)]="formulario.horas"
               name="horas"
               required>
+
+            @if (formulario.horas !== '' && +formulario.horas <= 0) {
+              <mat-error>
+                El número de horas debe ser mayor a cero y válido.
+              </mat-error>
+            }
 
           </mat-form-field>
 
@@ -87,7 +93,8 @@
             mat-raised-button
             type="submit"
             class="primary-button"
-            [disabled]="guardando">
+            [disabled]="guardando || !formulario.horas || +formulario.horas <= 0">
+
 
             {{ editandoId ? 'Guardar cambios' : 'Guardar consumo' }}
 
@@ -107,6 +114,12 @@
           }
 
         </div>
+
+        @if (errorMsg) {
+          <div style="color: #b33939; font-size: 0.85rem; margin-top: 12px; font-weight: 600; text-align: center;">
+            {{ errorMsg }}
+          </div>
+        }
 
       </form>
 

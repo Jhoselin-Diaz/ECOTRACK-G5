@@ -131,8 +131,8 @@
           @for (noti of notificaciones; track noti.id) {
             <div class="notification-item">
               <div class="notification-item-text">
-                <span class="notification-item-sender">De: Admin ({{ noti.senderAdminName }})</span>
-                <p class="notification-item-body">{{ noti.messageContent }}</p>
+                <span class="notification-item-sender">De: Admin ({{ noti.nombreAdminEnvia }})</span>
+                <p class="notification-item-body">{{ noti.contenidoMensaje }}</p>
               </div>
               <button mat-icon-button class="notification-check-btn" (click)="marcarLeida($event, noti.id)">
                 <mat-icon>check</mat-icon>

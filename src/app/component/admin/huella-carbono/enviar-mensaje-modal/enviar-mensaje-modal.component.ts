@@ -6,10 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { UsuarioHuellaDTO } from '../../../../model/huella.model';
 import { UsuarioService } from '../../../../service/usuario.service';
+import { NotificacionService, NotificacionAdminDTO } from '../../../../service/notificacion.service';
+
 
 @Component({
   selector: 'app-enviar-mensaje-modal',
@@ -35,8 +35,8 @@ export class EnviarMensajeModalComponent {
   constructor(
     public dialogRef: MatDialogRef<EnviarMensajeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UsuarioHuellaDTO,
-    private http: HttpClient,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private notificacionService: NotificacionService
   ) {}
 
   cerrar(): void {
@@ -56,13 +56,13 @@ export class EnviarMensajeModalComponent {
     const targetUserId = this.data.id;
     const username = this.usuarioService.obtenerUsername() || 'admin';
 
-    const payload = {
-      targetUserId: targetUserId,
-      senderName: username,
-      messageContent: this.mensaje.trim()
+    const payload: NotificacionAdminDTO = {
+      usuarioDestinoId: targetUserId,
+      nombreAdminEnvia: username,
+      contenidoMensaje: this.mensaje.trim()
     };
 
-    this.http.post(`${environment.apiUrl}/api/admin-notifications/send`, payload).subscribe({
+    this.notificacionService.enviarMensajeAdmin(payload).subscribe({
       next: (res) => {
         this.enviando = false;
         this.exitoMsg = 'Mensaje de mitigación enviado correctamente.';
@@ -78,3 +78,4 @@ export class EnviarMensajeModalComponent {
     });
   }
 }
+

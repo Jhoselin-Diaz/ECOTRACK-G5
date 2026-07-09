@@ -23,10 +23,10 @@ export interface UsuarioDTO {
 
 export interface NotificacionUsuario {
   id: number;
-  targetUserId: number;
-  senderAdminName: string;
-  messageContent: string;
-  status: string;
-  sentAt?: string;
+  usuarioDestinoId: number;
+  nombreAdminEnvia: string;
+  contenidoMensaje: string;
+  estado: string;
+  fechaEnvio?: string;
 }
 

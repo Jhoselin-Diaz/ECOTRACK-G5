@@ -7,7 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../service/auth.service';
 import { UsuarioService } from '../../../service/usuario.service';
+import { NotificacionService } from '../../../service/notificacion.service';
 import { NotificacionUsuario } from '../../../model/usuario.model';
+
 
 interface MenuItem {
   icon: string;
@@ -101,7 +103,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private notificacionService: NotificacionService
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +130,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   cargarNotificaciones(): void {
-    this.usuarioService.obtenerNotificacionesNoLeidas(this.userId).subscribe({
+    this.notificacionService.obtenerNoLeidas(this.userId).subscribe({
       next: (data) => {
         this.notificaciones = data;
       },
@@ -139,7 +142,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   marcarLeida(event: MouseEvent, notificationId: number): void {
     event.stopPropagation();
-    this.usuarioService.marcarNotificacionComoLeida(notificationId).subscribe({
+    this.notificacionService.marcarComoLeida(notificationId).subscribe({
       next: () => {
         this.notificaciones = this.notificaciones.filter(n => n.id !== notificationId);
       },

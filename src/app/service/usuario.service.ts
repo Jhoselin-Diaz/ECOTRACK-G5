@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { UsuarioResponseDTO, UsuarioDTO, NotificacionUsuario } from '../model/usuario.model';
+import { UsuarioResponseDTO, UsuarioDTO } from '../model/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,13 +55,6 @@ export class UsuarioService {
       observer.complete();
     });
   }
-
-  obtenerNotificacionesNoLeidas(userId: number): Observable<NotificacionUsuario[]> {
-    return this.http.get<NotificacionUsuario[]>(`${this.apiUrl}/api/user-notifications/unread?userId=${userId}`);
-  }
-
-  marcarNotificacionComoLeida(notificationId: number): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/api/user-notifications/read/${notificationId}`, {});
-  }
 }
+
 
